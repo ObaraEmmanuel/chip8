@@ -83,18 +83,17 @@ static void fetch(chip8* chip8_ctx){
     chip8_ctx->current_op.n = opcode & 0xf;
     chip8_ctx->current_op.full_op = opcode;
 
-    if(!chip8_ctx->debug){
-        return;
+    if(chip8_ctx->debug) {
+        printf("OP > %4X | op = %1X |  x = %1X | y = %1X | addr = %3X | nn = %2X | n = %1X \n",
+               opcode,
+               chip8_ctx->current_op.op,
+               chip8_ctx->current_op.x,
+               chip8_ctx->current_op.y,
+               chip8_ctx->current_op.addr,
+               chip8_ctx->current_op.kk,
+               chip8_ctx->current_op.n
+        );
     }
-    printf("OP > %4X | op = %1X |  x = %1X | y = %1X | addr = %3X | nn = %2X | n = %1X \n",
-           opcode,
-           chip8_ctx->current_op.op,
-           chip8_ctx->current_op.x,
-           chip8_ctx->current_op.y,
-           chip8_ctx->current_op.addr,
-           chip8_ctx->current_op.kk,
-           chip8_ctx->current_op.n
-    );
 }
 
 void execute(chip8* chip8_ctx){
@@ -235,7 +234,7 @@ void execute(chip8* chip8_ctx){
                     break;
                 case 5:
                     // set Vx = Vx - Vy, set VF = NOT borrow
-                    chip8_ctx->v[VF_IDX] = v_x > v_y;
+                    chip8_ctx->v[VF_IDX] = v_x >= v_y;
                     chip8_ctx->v[op.x] = v_x - v_y;
                     break;
                 case 6:
@@ -245,7 +244,7 @@ void execute(chip8* chip8_ctx){
                     break;
                 case 7:
                     // set Vx = Vy - Vx, set VF - NOT borrow
-                    chip8_ctx->v[VF_IDX] = v_y > v_x;
+                    chip8_ctx->v[VF_IDX] = v_y >= v_x;
                     chip8_ctx->v[op.x] = v_y - v_x;
                     break;
                 case 0xE:
