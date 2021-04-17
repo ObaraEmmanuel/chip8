@@ -9,7 +9,7 @@ void get_graphics_context(GraphicsContext* ctx){
 
     SDL_Init(SDL_INIT_EVERYTHING);
     ctx->window = SDL_CreateWindow(
-        "CHIP 8 EMULATOR",
+        "SUPER CHIP 1.1 EMULATOR",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         ctx->width * ctx->scale,

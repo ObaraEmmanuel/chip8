@@ -7,9 +7,9 @@ const static int KEYMAP[0x10] = {
         SDLK_1, // 1
         SDLK_2, // 2
         SDLK_3, // 3
-        SDLK_w, // 4
-        SDLK_LEFT, // 5
-        SDLK_RIGHT, // 6
+        SDLK_q, // 4
+        SDLK_w, // 5
+        SDLK_e, // 6
         SDLK_a, // 7
         SDLK_s, // 8
         SDLK_d, // 9
