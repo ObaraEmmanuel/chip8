@@ -394,15 +394,15 @@ static void draw(chip8* chip8_ctx){
     uint8_t v_y = chip8_ctx->v[op.y];
     uint16_t y, coord_1, coord_2, w_y;
     uint8_t pixel, x, w_x;
-    // wrap starting coordinates
-    v_x %= SCREEN_WIDTH;
-    v_y %= SCREEN_HEIGHT;
     // clear collision register
     chip8_ctx->v[VF_IDX] = 0;
     y = 0;
     if(chip8_ctx->screen_mode == LOW_RES64) {
         v_x *= 2;
         v_y *= 2;
+        // wrap starting coordinates
+        v_x %= SCREEN_WIDTH;
+        v_y %= SCREEN_HEIGHT;
         for (w_y = 0; y < op.n; w_y += 2, y++) {
             pixel = chip8_ctx->mem[chip8_ctx->I + y];
             x = 0;
@@ -420,6 +420,9 @@ static void draw(chip8* chip8_ctx){
             }
         }
     }else{
+        // wrap starting coordinates
+        v_x %= SCREEN_WIDTH;
+        v_y %= SCREEN_HEIGHT;
         // render high resolution 128 x 64
         for(y = 0; y < op.n; y++){
             pixel = chip8_ctx->mem[chip8_ctx->I + y];
