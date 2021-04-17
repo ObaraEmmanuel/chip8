@@ -326,7 +326,8 @@ void execute(chip8* chip8_ctx){
                     adv(chip8_ctx, 1);
                     break;
                 case 0x1E:
-                    // set I = I +Vx
+                    // set I = I + Vx
+                    chip8_ctx->v[VF_IDX] = !((0xFFFF - chip8_ctx->I) < v_x);
                     chip8_ctx->I += v_x;
                     adv(chip8_ctx, 1);
                     break;
