@@ -2,4 +2,8 @@
 /cmake-build-debug
 /build
 /dist
-
+CMakeCache.txt
+Makefile
+*.c8
+*.CH8
+cmake_install.cmake
