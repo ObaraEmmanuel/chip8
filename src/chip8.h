@@ -22,7 +22,12 @@
 #define WINDOW_HEIGHT 512
 #define SCROLL_STEP 4
 
-#define CPU_CLOCK_DELAY 1000
+#ifdef WIN32
+#define CPU_CLOCK_DELAY 1 //ms
+#else
+#define CPU_CLOCK_DELAY 1000 //us
+#endif
+
 #define CLOCK_DIV 9
 
 #define NUM_KEYS 16

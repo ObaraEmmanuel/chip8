@@ -44,7 +44,7 @@ void init_emulator(FILE* input, chip8* chip8_ctx){
     memcpy(chip8_ctx->mem, FONT_SET, FONT_SET_SIZE);
     memcpy(chip8_ctx->mem + FONT_SET_SIZE, SUPER_FONT_SET, SUPER_FONT_SET_SIZE);
 
-    srandom(time(0));
+    srand(time(0));
 }
 
 
@@ -274,7 +274,7 @@ void execute(chip8* chip8_ctx){
             break;
         case 0xC:
             // Vx = random byte AND kk
-            chip8_ctx->v[op.x] = (uint8_t)random() & op.kk;
+            chip8_ctx->v[op.x] = (uint8_t)rand() & op.kk;
             adv(chip8_ctx, 1);
             break;
         case 0xD:
@@ -476,7 +476,7 @@ static void scroll_left(chip8 *chip8_ctx) {
 
 static void scroll_right(chip8 *chip8_ctx) {
     for(size_t y = 0; y < SCREEN_HEIGHT; y++){
-        for (ssize_t x = SCREEN_WIDTH - SCROLL_STEP - 1; x >= 0; x--){
+        for (long long x = SCREEN_WIDTH - SCROLL_STEP - 1; x >= 0; x--){
             chip8_ctx->screen[y * SCREEN_WIDTH + x + SCROLL_STEP] = chip8_ctx->screen[y * SCREEN_WIDTH + x];
             if(x < SCROLL_STEP) {
                 chip8_ctx->screen[y * SCREEN_WIDTH + x] = 0;
@@ -486,7 +486,7 @@ static void scroll_right(chip8 *chip8_ctx) {
 }
 
 static void scroll_down(chip8* chip8_ctx, int n){
-    for(ssize_t y = SCREEN_HEIGHT - n - 1; y >= 0; y--){
+    for(long long y = SCREEN_HEIGHT - n - 1; y >= 0; y--){
         memcpy(chip8_ctx->screen + (y + n)*SCREEN_WIDTH, chip8_ctx->screen + (y * SCREEN_WIDTH), SCREEN_WIDTH);
     }
     memset(chip8_ctx->screen, 0, SCREEN_WIDTH * n);

@@ -1,4 +1,10 @@
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <unistd.h>
+#endif
+
+#include <stdlib.h>
 
 #include "gfx.h"
 #include "chip8.h"
@@ -34,6 +40,8 @@ int main(int argc, char *argv[]){
     g_ctx.height = SCREEN_HEIGHT;
     g_ctx.scale = WINDOW_WIDTH / SCREEN_WIDTH;
     get_graphics_context(&g_ctx);
+    int paused = 1;
+    SDL_PauseAudioDevice(g_ctx.audio_device, paused);
 
     while (!ctx.exit){
         execute(&ctx);
@@ -50,13 +58,21 @@ int main(int argc, char *argv[]){
         if(ctx.step_cycles == CLOCK_DIV){
             ctx.delay_timer -= (ctx.delay_timer > 0);
             ctx.sound_timer -= (ctx.sound_timer > 0);
-            if(ctx.sound_timer > 0){
-                beep();
+            if(ctx.sound_timer > 0 && paused){
+                paused = 0;
+                SDL_PauseAudioDevice(g_ctx.audio_device, paused);
+            }
+            if(ctx.sound_timer == 0) {
+                paused = 1;
+                SDL_PauseAudioDevice(g_ctx.audio_device, paused);
             }
             ctx.step_cycles = 0;
         }
-
+#ifdef WIN32
+        Sleep(CPU_CLOCK_DELAY);
+#else
         usleep(CPU_CLOCK_DELAY);
+#endif
     }
     free_graphics(&g_ctx);
     return 0;

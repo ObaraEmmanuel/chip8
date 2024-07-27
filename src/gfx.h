@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 const static int KEYMAP[0x10] = {
         SDLK_x, // 0
@@ -25,6 +25,7 @@ typedef struct{
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
+    SDL_AudioDeviceID audio_device;
     int width;
     int height;
     int scale;

@@ -1,7 +1,9 @@
-#include <SDL2/SDL.h>
+#include "gfx.h"
+
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
-#include "gfx.h"
 
 static void audio_callback(void *user_data, uint8_t *raw_buffer, int bytes);
 
@@ -63,23 +65,17 @@ void get_graphics_context(GraphicsContext* ctx){
     SDL_zero(spec);
 
     spec.freq = 44100; // number of samples per second
-    spec.format = AUDIO_F32;
+    spec.format = AUDIO_S16SYS;
     spec.channels = 2;
     spec.samples = 2048; // buffer-size
     spec.callback = audio_callback; // function SDL calls periodically to refill the buffer
     spec.userdata = &sample_nr; // counter, keeping track of current sample number
 
     SDL_AudioSpec get_spec;
-    if (SDL_OpenAudio(&spec, &get_spec) != 0) {
+    ctx->audio_device = SDL_OpenAudioDevice(NULL, 0, &spec, NULL, 0);
+    if (ctx->audio_device == 0) {
         printf(
                 "ERROR > Failed to open audio \n"
-                "SDL_ERROR > %s \n",
-                SDL_GetError()
-        );
-    }
-    if (spec.format != get_spec.format){
-        printf(
-                "ERROR > Failed to acquire requested audio spec \n"
                 "SDL_ERROR > %s \n",
                 SDL_GetError()
         );
@@ -125,9 +121,9 @@ static void audio_callback(void *user_data, uint8_t *raw_buffer, int bytes) {
 }
 
 void beep(){
-    SDL_PauseAudio(0); // start playing sound
-    SDL_Delay(25); // wait while sound is playing
-    SDL_PauseAudio(1); // stop playing sound
+    // SDL_PauseAudio(0); // start playing sound
+    // SDL_Delay(25); // wait while sound is playing
+    // SDL_PauseAudio(1); // stop playing sound
 }
 
 void free_graphics(GraphicsContext* ctx){
